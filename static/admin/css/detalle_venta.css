@@ -1,0 +1,44 @@
+#detalles-group .tabular .original p {
+    display: none;
+}
+
+#detalles-group tbody .form-row.add-delete {
+    display: none;
+}
+
+#detalles-group .tabular td.delete {
+    text-align: center;
+    vertical-align: middle;
+    width: 40px;
+}
+
+#detalles-group .tabular td.delete .inline-deletelink {
+    float: none;
+    display: inline-block;
+    text-indent: -9999px;
+    width: 28px;
+    height: 28px;
+    background: url('/static/admin/img/icon-deletelink.svg') center no-repeat;
+    background-size: 16px;
+    opacity: 0.7;
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    vertical-align: middle;
+}
+
+#detalles-group .tabular td.delete .inline-deletelink:hover {
+    opacity: 1;
+    background-color: #f0f0f0;
+    border-color: #ccc;
+}
+
+#detalles-group .tabular input[readonly] {
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    cursor: default;
+}
+
+#detalles-group .tabular .delete input[type="checkbox"] {
+    display: none;
+}

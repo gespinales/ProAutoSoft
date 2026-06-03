@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    {% if perms.clientes.view_cliente %}
+    <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-gray-500 text-sm uppercase">Clientes</h3>
+        <p class="text-3xl font-bold text-blue-900">{{ total_clientes }}</p>
+        <a href="/admin/clientes/cliente/" class="text-blue-600 text-sm hover:underline">Ver todos →</a>
+    </div>
+    {% endif %}
+    {% if perms.ventas.view_venta %}
+    <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-gray-500 text-sm uppercase">Ventas (mes)</h3>
+        <p class="text-3xl font-bold text-green-700">Q{{ ventas_mes|floatformat:2 }}</p>
+        <a href="/admin/ventas/venta/" class="text-blue-600 text-sm hover:underline">Ver ventas →</a>
+    </div>
+    {% endif %}
+    {% if perms.cuentas_cobrar.view_cuentacobrar %}
+    <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-gray-500 text-sm uppercase">Por Cobrar</h3>
+        <p class="text-3xl font-bold text-red-700">Q{{ saldo_pendiente|floatformat:2 }}</p>
+        <a href="/admin/cuentas_cobrar/cuentacobrar/" class="text-blue-600 text-sm hover:underline">Gestionar →</a>
+    </div>
+    {% endif %}
+    {% if perms.productos.view_producto %}
+    <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-gray-500 text-sm uppercase">Productos</h3>
+        <p class="text-3xl font-bold text-blue-900">{{ total_productos }}</p>
+        <a href="/admin/productos/producto/" class="text-blue-600 text-sm hover:underline">Catálogo →</a>
+    </div>
+    {% endif %}
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="bg-white rounded-lg shadow p-6">
+        <h2 class="text-lg font-bold mb-4">Últimas Ventas</h2>
+        <table class="w-full text-sm">
+            <thead>
+                <tr class="text-left text-gray-500 border-b">
+                    <th class="pb-2">#</th>
+                    <th class="pb-2">Cliente</th>
+                    <th class="pb-2">Fecha</th>
+                    <th class="pb-2">Total</th>
+                    <th class="pb-2">Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for v in ultimas_ventas %}
+                <tr class="border-b hover:bg-gray-50">
+                    <td class="py-2">{{ v.id }}</td>
+                    <td class="py-2">{{ v.cliente.nombre|truncatechars:30 }}</td>
+                    <td class="py-2">{{ v.fecha|date:"d/m/Y" }}</td>
+                    <td class="py-2">Q{{ v.venta_total|floatformat:2 }}</td>
+                    <td class="py-2">{{ v.get_estado_display }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="5" class="py-4 text-center text-gray-400">Sin ventas registradas</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="bg-white rounded-lg shadow p-6">
+        <h2 class="text-lg font-bold mb-4">Cuentas Pendientes</h2>
+        <table class="w-full text-sm">
+            <thead>
+                <tr class="text-left text-gray-500 border-b">
+                    <th class="pb-2">Cliente</th>
+                    <th class="pb-2">Venta</th>
+                    <th class="pb-2">Saldo</th>
+                    <th class="pb-2">Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in cuentas_pendientes %}
+                <tr class="border-b hover:bg-gray-50">
+                    <td class="py-2">{{ c.venta.cliente.nombre|truncatechars:30 }}</td>
+                    <td class="py-2">#{{ c.venta.id }}</td>
+                    <td class="py-2 font-semibold text-red-600">Q{{ c.saldo_pendiente|floatformat:2 }}</td>
+                    <td class="py-2">{{ c.get_estado_display }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="4" class="py-4 text-center text-gray-400">Sin cuentas pendientes</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
