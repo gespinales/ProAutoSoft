@@ -19,6 +19,10 @@ class Venta(models.Model):
     nota_envio = models.CharField(max_length=100, blank=True, verbose_name='Nota de envío')
     estado = models.CharField(max_length=20, choices=ESTADOS, default='PENDIENTE')
     descripcion = models.TextField(blank=True)
+    cotizacion = models.OneToOneField(
+        'cotizaciones.Cotizacion', on_delete=models.SET_NULL, null=True, blank=True,
+        related_name='venta_generada'
+    )
     gastos = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     detalle = models.TextField(blank=True)
     creado = models.DateTimeField(auto_now_add=True)

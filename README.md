@@ -44,6 +44,7 @@ python manage.py runserver 8080
 ```bash
 # Activar entorno virtual
 venv\Scripts\activate
+.\venv\Scripts\python manage.py runserver 8080
 
 # Iniciar servidor
 python manage.py runserver 8080

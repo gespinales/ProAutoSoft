@@ -30,7 +30,7 @@ class DetalleVentaInline(admin.TabularInline):
 
 @admin.register(Venta)
 class VentaAdmin(admin.ModelAdmin):
-    list_display = ['id', 'cliente', 'fecha', 'venta_total_display', 'estado']
+    list_display = ['id', 'cliente', 'fecha', 'venta_total_display', 'estado', 'cotizacion_link']
     list_filter = ['estado', 'fecha']
     search_fields = ['cliente__nombre', 'nota_envio']
     inlines = [DetalleVentaInline]
@@ -44,6 +44,10 @@ class VentaAdmin(admin.ModelAdmin):
         (None, {
             'fields': ['cliente', 'vendedor', 'fecha', 'estado', 'nota_envio']
         }),
+        ('Cotización', {
+            'fields': ['cotizacion'],
+            'classes': ['collapse']
+        }),
         ('Totales', {
             'fields': [
                 'venta_total_display', 'costo_total_display',
@@ -55,6 +59,13 @@ class VentaAdmin(admin.ModelAdmin):
             'classes': ['collapse']
         }),
     ]
+
+    def cotizacion_link(self, obj):
+        if obj.cotizacion:
+            from django.utils.html import format_html
+            return format_html('<a href="/admin/cotizaciones/cotizacion/{}/change/">#{}</a>', obj.cotizacion.id, obj.cotizacion.id)
+        return '-'
+    cotizacion_link.short_description = 'Cotización'
 
     def venta_total_display(self, obj):
         return f'Q{obj.venta_total:,.2f}'

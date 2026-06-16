@@ -19,10 +19,15 @@ INSTALLED_APPS = [
     'django_filters',
     'clientes',
     'productos',
+    'proveedores',
     'vendedores',
     'ventas',
     'cuentas_cobrar',
     'envios',
+    'gastos',
+    'compras',
+    'cotizaciones',
+    'reportes',
 ]
 
 MIDDLEWARE = [
@@ -71,6 +76,9 @@ FORMAT_MODULE_PATH = 'config.formats'
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
+
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 

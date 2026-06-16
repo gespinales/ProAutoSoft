@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>{{ title }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @media print { .no-print { display: none; } }
+    </style>
+</head>
+<body class="p-8 bg-gray-100">
+    <div class="max-w-5xl mx-auto bg-white p-6 rounded shadow">
+        <div class="flex justify-between items-center mb-6 no-print">
+            <h1 class="text-2xl font-bold">{{ title }}</h1>
+            <div>
+                <form method="get" class="inline">
+                    <select name="ruta" onchange="this.form.submit()" class="border rounded px-2 py-1 text-sm">
+                        <option value="">Todas las rutas</option>
+                        {% for r in rutas %}
+                        <option value="{{ r }}" {% if ruta_seleccionada == r %}selected{% endif %}>{{ r }}</option>
+                        {% endfor %}
+                    </select>
+                </form>
+                <button onclick="window.print()" class="px-3 py-1 bg-gray-500 text-white rounded text-sm">Imprimir PDF</button>
+            </div>
+        </div>
+        <div class="text-right mb-4 text-lg font-bold">Total Pendiente: Q{{ total_pendiente|floatformat:2 }}</div>
+        <table class="w-full text-sm border-collapse">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="p-2 text-left">Cliente</th>
+                    <th class="p-2 text-left">Ruta</th>
+                    <th class="p-2 text-left">Venta</th>
+                    <th class="p-2 text-right">Saldo</th>
+                    <th class="p-2 text-left">Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in cuentas %}
+                <tr class="border-b">
+                    <td class="p-2">{{ c.venta.cliente.nombre }}</td>
+                    <td class="p-2">{{ c.venta.cliente.ruta }}</td>
+                    <td class="p-2">#{{ c.venta.id }} - {{ c.venta.fecha }}</td>
+                    <td class="p-2 text-right">Q{{ c.saldo_pendiente|floatformat:2 }}</td>
+                    <td class="p-2">{{ c.get_estado_display }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="5" class="p-4 text-center text-gray-500">No hay cuentas pendientes</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
